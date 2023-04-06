@@ -37,7 +37,7 @@ void handlePipe(char** args, int pipe_index) {
         perror("fork");
         exit(1);
     } else if (pid == 0) {
-        // close the write end of the pipe
+        // close the read end of the pipe
         close(pipefd[0]);
         // redirect stdout to the write end of the pipe
         dup2(pipefd[1], STDOUT_FILENO);
@@ -55,7 +55,7 @@ void handlePipe(char** args, int pipe_index) {
         perror("fork");
         exit(1);
     } else if (pid == 0) {
-        // close the read end of the pipe
+        // close the write end of the pipe
         close(pipefd[1]);
         // redirect stdin to the read end of the pipe
         dup2(pipefd[0], STDIN_FILENO);
