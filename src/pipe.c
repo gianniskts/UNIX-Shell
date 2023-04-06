@@ -72,5 +72,4 @@ void handlePipe(char** args, int pipe_index) {
     // wait for both child processes to finish executing
     wait(NULL);
     wait(NULL);
-
 }
