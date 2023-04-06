@@ -29,6 +29,8 @@ void handlePipe(char** args, int pipe_index) {
         exit(1);
     }
 
+    printf("Descriptors are %d and %d\n", pipefd[0], pipefd[1]);
+
     // fork a child process to execute the left-hand side of the pipe
     pid = fork();
     if (pid == -1) {
