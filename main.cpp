@@ -68,7 +68,11 @@ int main(void) {
                     wait(NULL);
                 
             }
+
+
+
             }
+
 
         }
     }
