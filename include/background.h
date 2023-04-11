@@ -1,0 +1,1 @@
+bool checkBackground(char** tokens);

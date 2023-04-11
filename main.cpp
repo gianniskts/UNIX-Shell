@@ -10,6 +10,7 @@
 #include "./include/utils.h"
 #include "./include/redirection.h"
 #include "./include/pipe.h"
+#include "./include/background.h"
 
 using namespace std;
 
@@ -42,7 +43,15 @@ int main(void) {
             char* output_file = NULL;
             int append_output = 0;
            
+            // check for input/output redirection
             checkRedirection(tokens, &redirect_input, &redirect_output, &input_file, &output_file, &append_output);
+
+            // check for background process
+            bool background = checkBackground(tokens);
+            cout << "background: " << background << endl;
+
+            if (!background) {
+
 
             // execute the command with input/output redirection
             pid_t pid = fork();
@@ -55,8 +64,12 @@ int main(void) {
                 perror("execvp");
                 exit(1);
             } else {
-                wait(NULL);
+               
+                    wait(NULL);
+                
             }
+            }
+
         }
     }
     return 0;
