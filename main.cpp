@@ -179,32 +179,9 @@ int main(void) {
             // execute the command with input/output redirection
             pid_t pid = fork();
             if (pid == 0) {
-                // child process
-                if (redirect_input) {
-                    // redirect input from a file
-                    int fd = open(input_file, O_RDONLY);
-                    if (fd == -1) {
-                        perror("open");
-                        exit(1);
-                    }
-                    dup2(fd, STDIN_FILENO);
-                    close(fd);
-                }
-                if (redirect_output) {
-                    // redirect output to a file
-                    int fd;
-                    if (append_output) {
-                        fd = open(output_file, O_CREAT | O_WRONLY | O_APPEND, 0666);
-                    } else {
-                        fd = open(output_file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-                    }
-                    if (fd == -1) {
-                        perror("open");
-                        exit(1);
-                    }
-                    dup2(fd, STDOUT_FILENO);
-                    close(fd);
-                }
+                if (redirect_input || redirect_output)
+                    handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
+                
                 execvp(tokens[0], tokens);
                 perror("execvp");
                 exit(1);
