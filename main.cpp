@@ -1,37 +1,3 @@
-// #include <iostream>
-// #include <cstring>
-// #include <unistd.h>   // for fork(), execvp()
-// #include <sys/wait.h> // for wait()
-// #include <fcntl.h>    // for open()
-
-// #include "utils.h"
-
-// using namespace std;
-
-// #define MAX_INPUT_LENGTH 1024
-// #define MAX_TOKENS 64
-
-// int main()
-// {
-//     char input[MAX_INPUT_LENGTH];
-//     char* tokens[MAX_TOKENS];
-//     while (true)
-//     {
-//         cout << "in-mysh-now:>";
-//         cin.getline(input, MAX_INPUT_LENGTH);
-//         tokenizeInput(input, tokens);
-//         if (tokens[0] == NULL)
-//             continue; // user entered nothing
-//         if (strcmp(tokens[0], "exit") == 0)
-//             break; // user entered "exit", so we exit the shell
-
-//         Command command;
-//         parseCommand(tokens, MAX_TOKENS, command);
-//         executeCommand(command);
-//     }
-//     return 0;
-// }
-
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
