@@ -48,8 +48,9 @@ int main(void) {
             // execute the command with input/output redirection
             pid_t pid = fork();
             if (pid == 0) {
-                if (redirect_input || redirect_output)
+                if (redirect_input || redirect_output) {
                     handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
+                }
                 
                 execvp(tokens[0], tokens);
                 perror("execvp");
