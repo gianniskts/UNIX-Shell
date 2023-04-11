@@ -1,11 +1,11 @@
-CC=gcc
+CC=g++
 CFLAGS=-Wall -Wextra -Iinclude
 SRCDIR=src
 OBJDIR=obj
 BINDIR=.
 
-SOURCES=$(wildcard $(SRCDIR)/*.c)
-OBJECTS=$(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
+SOURCES=$(wildcard $(SRCDIR)/*.cpp)
+OBJECTS=$(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
 .PHONY: all clean
 
@@ -14,10 +14,10 @@ all: main
 main: $(OBJECTS) $(OBJDIR)/main.o
 	$(CC) $(CFLAGS) $^ -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/main.o: main.c | $(OBJDIR)
+$(OBJDIR)/main.o: main.cpp | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR):
