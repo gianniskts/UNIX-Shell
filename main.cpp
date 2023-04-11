@@ -42,6 +42,7 @@
 #include <fcntl.h>
 
 #include "utils.h"
+#include "redirection.h"
 
 using namespace std;
 
@@ -172,24 +173,8 @@ int main(void) {
             char* input_file = NULL;
             char* output_file = NULL;
             int append_output = 0;
-            int j = 0;
-            while (tokens[j] != NULL) {
-                if (strcmp(tokens[j], "<") == 0) {
-                    redirect_input = 1;
-                    input_file = tokens[j + 1];
-                    tokens[j] = NULL;
-                } else if (strcmp(tokens[j], ">") == 0) {
-                    redirect_output = 1;
-                    output_file = tokens[j + 1];
-                    tokens[j] = NULL;
-                } else if (strcmp(tokens[j], ">>") == 0) {
-                    redirect_output = 1;
-                    output_file = tokens[j + 1];
-                    append_output = 1;
-                    tokens[j] = NULL;
-                }
-                j++;
-            }
+           
+            checkRedirection(tokens, &redirect_input, &redirect_output, &input_file, &output_file, &append_output);
 
             // execute the command with input/output redirection
             pid_t pid = fork();
