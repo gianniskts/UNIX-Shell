@@ -49,6 +49,7 @@ int main(void) {
             // check for background process
             bool background = checkBackground(tokens);
             cout << "background: " << background << endl;
+            // pid, bool finished and then if the next command sees that the bg process is finished, it will kill it
 
             if (!background) {
 
