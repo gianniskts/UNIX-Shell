@@ -7,9 +7,9 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
-#include "utils.h"
-#include "redirection.h"
-#include "pipe.h"
+#include "./include/utils.h"
+#include "./include/redirection.h"
+#include "./include/pipe.h"
 
 using namespace std;
 
