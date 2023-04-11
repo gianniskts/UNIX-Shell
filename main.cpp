@@ -18,9 +18,8 @@ using namespace std;
 int main(void) {
 
     char* tokens[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
-    int should_run = 1;           // flag to determine when to exit program
 
-    while (should_run) {
+    while (true) {
         printf("in-mysh-now:>");
         fflush(stdout);
 
