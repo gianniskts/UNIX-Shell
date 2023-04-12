@@ -40,52 +40,27 @@ bool checkBackground(char** tokens, pid_t* pid) {
         } else {
             // parent process
             printf("Background process started with PID %d\n", *pid);
+            // doesnt wait for child process to finish because it runs on background
         }
     }
 
     return background;
 }
 
-
-// bool checkBackground(char** tokens) {
-//     // check for background process
-//     bool background = false;
-
-//     int i = 0;
-//     while (tokens[i] != NULL) {
-//         if (strcmp(tokens[i], "&") == 0) {
-//             background = true;
-//             tokens[i] = NULL;
-//             break;
-//         }
-//         i++;
-//     }
-
-//     // if background process, fork and execute
-//     if (background) {
-//         // fork and execute
-
-//     pid_t pid = fork();
-//     if (pid < 0) {
-//         perror("fork failed");
-//     } else if (pid == 0) {
-//         // child process
-//         execvp(tokens[0], tokens);
-//         perror("execvp failed");
-//         exit(EXIT_FAILURE);
-//     } else {
-//         // parent process
-//         printf("Background process started with PID %d\n", pid);
-//     }
-
-//     // check for completed background processes
-//         int status;
-//         pid_t bg_pid;
-//         while ((bg_pid = waitpid(-1, &status, WNOHANG)) > 0) {
-//             printf("Background process with PID %d has completed\n", bg_pid);
-//         }
-
-//     }
-
-//     return background;
-// }
+void checkFinishedBackground(pid_t bg_pid, bool background) {
+    while (background) {
+        int status;
+        pid_t result = waitpid(bg_pid, &status, WNOHANG);
+        if (result == bg_pid) {
+            // background process has finished
+            printf("Background process with PID %d has finished\n", bg_pid);
+            break;
+        } else if (result == -1) {
+            // error
+            perror("waitpid failed");
+            break;
+        }
+        // background process is still running
+        sleep(1); // wait for a second before checking again
+    }
+}

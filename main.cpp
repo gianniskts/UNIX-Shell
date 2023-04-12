@@ -24,10 +24,9 @@ int main(void) {
         printf("in-mysh-now:>");
         fflush(stdout);
 
-        // read input from the user 
+        // read input from the user and parse it
         char users_command[MAX_LINE];
         fgets(users_command, MAX_LINE, stdin);
-
         parseCommand(tokens, users_command);
 
         // check for pipes in the command
@@ -47,54 +46,25 @@ int main(void) {
             checkRedirection(tokens, &redirect_input, &redirect_output, &input_file, &output_file, &append_output);
 
             // check for background process
-            // bool background = checkBackground(tokens);
-            // cout << "background: " << background << endl;
-            // pid, bool finished and then if the next command sees that the bg process is finished, it will kill it
-
+            // TODO: check for background process in pipes etc
             pid_t bg_pid;
             bool background = checkBackground(tokens, &bg_pid);
-
-            while (background) {
-                int status;
-                pid_t result = waitpid(bg_pid, &status, WNOHANG);
-                if (result == bg_pid) {
-                    // background process has finished
-                    printf("Background process with PID %d has finished\n", bg_pid);
-                    break;
-                } else if (result == -1) {
-                    // error
-                    perror("waitpid failed");
-                    break;
-                }
-                // background process is still running
-                sleep(1); // wait for a second before checking again
-            }
-
+            checkFinishedBackground(bg_pid, background);
 
             if (!background) {
-
-
-            // execute the command with input/output redirection
-            pid_t pid = fork();
-            if (pid == 0) {
-                if (redirect_input || redirect_output) {
-                    handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
+                // execute the command with input/output redirection
+                pid_t pid = fork();
+                if (pid == 0) {
+                    if (redirect_input || redirect_output) {
+                        handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
+                    }
+                    execvp(tokens[0], tokens);
+                    perror("execvp");
+                    exit(1);
+                } else {
+                        wait(NULL);
                 }
-                
-                execvp(tokens[0], tokens);
-                perror("execvp");
-                exit(1);
-            } else {
-               
-                    wait(NULL);
-                
             }
-
-
-
-            }
-
-
         }
     }
     return 0;
