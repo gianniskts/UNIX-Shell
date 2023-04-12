@@ -47,9 +47,29 @@ int main(void) {
             checkRedirection(tokens, &redirect_input, &redirect_output, &input_file, &output_file, &append_output);
 
             // check for background process
-            bool background = checkBackground(tokens);
-            cout << "background: " << background << endl;
+            // bool background = checkBackground(tokens);
+            // cout << "background: " << background << endl;
             // pid, bool finished and then if the next command sees that the bg process is finished, it will kill it
+
+            pid_t bg_pid;
+            bool background = checkBackground(tokens, &bg_pid);
+
+            while (background) {
+                int status;
+                pid_t result = waitpid(bg_pid, &status, WNOHANG);
+                if (result == bg_pid) {
+                    // background process has finished
+                    printf("Background process with PID %d has finished\n", bg_pid);
+                    break;
+                } else if (result == -1) {
+                    // error
+                    perror("waitpid failed");
+                    break;
+                }
+                // background process is still running
+                sleep(1); // wait for a second before checking again
+            }
+
 
             if (!background) {
 

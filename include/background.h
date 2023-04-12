@@ -1,1 +1,1 @@
-bool checkBackground(char** tokens);
+bool checkBackground(char** tokens, pid_t* pid);
