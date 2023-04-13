@@ -20,6 +20,9 @@ int main(void) {
 
     char* tokens[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
 
+    char* aliases[MAX_LINE / 2 + 1][2]; // aliases to be stored
+    int alias_count = 0; // number of aliases currently stored
+
     while (true) {
         printf("in-mysh-now:>");
         fflush(stdout);
@@ -28,6 +31,33 @@ int main(void) {
         char users_command[MAX_LINE];
         fgets(users_command, MAX_LINE, stdin);
         parseCommand(tokens, users_command);
+
+        // check for alias commands
+        if (strcmp(tokens[0], "createalias") == 0 && tokens[1] != NULL && tokens[2] != NULL) {
+            aliases[alias_count][0] = strdup(tokens[1]);
+            aliases[alias_count][1] = strdup(tokens[2]);
+            alias_count++;
+            continue;
+        } else if (strcmp(tokens[0], "destroyalias") == 0 && tokens[1] != NULL) {
+            for (int i = 0; i < alias_count; i++) {
+                if (strcmp(aliases[i][0], tokens[1]) == 0) {
+                    free(aliases[i][0]);
+                    free(aliases[i][1]);
+                    aliases[i][0] = NULL;
+                    aliases[i][1] = NULL;
+                    break;
+                }
+            }
+            continue;
+        }
+        // check for aliases and replace tokens if necessary
+        for (int i = 0; i < alias_count; i++) {
+            if (aliases[i][0] != NULL && strcmp(aliases[i][0], tokens[0]) == 0) {
+                tokens[0] = aliases[i][1];
+                break;
+            }
+        }
+
 
         // check for pipes in the command
         int has_pipe = 0;
