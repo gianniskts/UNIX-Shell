@@ -17,15 +17,36 @@ using namespace std;
 
 #define MAX_LINE 80 // The maximum length command 
 
-void sigintHandler(int sig) {
-    // do nothing, just print a message
-    cout << "\nCaught SIGINT signal\n";
+
+// global variable to store the PID of the running process
+pid_t running_pid;
+pid_t suspended_pid;
+
+
+// signal handler for SIGINT (sent by control-c)
+__sighandler_t sigint_handler(pid_t running_pid) {
+    if (running_pid != 0) {
+        cout << endl;
+        kill(running_pid, SIGINT);
+        int status;
+        waitpid(running_pid, &status, 0);
+        running_pid = 0;
+    } 
+
+    return 0;
 }
 
-void sigtstpHandler(int sig) {
-    // send the signal to the running program
-    kill(0, sig);
+// signal handler for SIGTSTP (sent by control-z)
+__sighandler_t sigtstp_handler(pid_t running_pid, pid_t suspended_pid) {
+    if (running_pid != 0) {
+        kill(running_pid, SIGTSTP);
+        suspended_pid = running_pid;
+        running_pid = 0;
+    }
+
+    return 0;
 }
+
 
 
 int main(void) {
@@ -35,10 +56,10 @@ int main(void) {
     char* aliases[MAX_LINE / 2 + 1][2]; // aliases to be stored
     int alias_count = 0; // number of aliases currently stored
 
-    // register signal handlers
-    signal(SIGINT, sigintHandler);
-    signal(SIGTSTP, sigtstpHandler);
-
+    // set up the signal handler for SIGINT and SIGTSTP
+    signal(SIGINT, sigint_handler(running_pid));
+    signal(SIGTSTP, sigtstp_handler(running_pid, suspended_pid));
+    
     while (true) {
         printf("in-mysh-now:>");
         fflush(stdout);
@@ -81,6 +102,8 @@ int main(void) {
             if (!background) {
                 // execute the command with input/output redirection
                 pid_t pid = fork();
+                running_pid = pid;
+
                 if (pid == 0) {
                     if (redirect_input || redirect_output) {
                         handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
@@ -89,7 +112,9 @@ int main(void) {
                     perror("execvp");
                     exit(1);
                 } else {
-                        wait(NULL);
+                    wait(NULL);
+
+                    
                 }
             }
         }
