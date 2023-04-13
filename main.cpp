@@ -17,12 +17,27 @@ using namespace std;
 
 #define MAX_LINE 80 // The maximum length command 
 
+void sigintHandler(int sig) {
+    // do nothing, just print a message
+    cout << "\nCaught SIGINT signal\n";
+}
+
+void sigtstpHandler(int sig) {
+    // send the signal to the running program
+    kill(0, sig);
+}
+
+
 int main(void) {
 
     char* tokens[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
 
     char* aliases[MAX_LINE / 2 + 1][2]; // aliases to be stored
     int alias_count = 0; // number of aliases currently stored
+
+    // register signal handlers
+    signal(SIGINT, sigintHandler);
+    signal(SIGTSTP, sigtstpHandler);
 
     while (true) {
         printf("in-mysh-now:>");
@@ -32,6 +47,11 @@ int main(void) {
         char users_command[MAX_LINE];
         fgets(users_command, MAX_LINE, stdin);
         parseCommand(tokens, users_command);
+
+        // check for exit command
+        if (strcmp(tokens[0], "exit") == 0) {
+            break;
+        }
 
         if (checkAlias(tokens, aliases, alias_count))   
             continue;
