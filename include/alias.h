@@ -1,0 +1,1 @@
+bool checkAlias(char* tokens[], char* aliases[][2], int& alias_count);
