@@ -12,40 +12,14 @@
 #include "./include/pipe.h"
 #include "./include/background.h"
 #include "./include/alias.h"
+#include "./include/signals.h"
 
 using namespace std;
 
 #define MAX_LINE 80 // The maximum length command 
 
-
-// global variable to store the PID of the running process
+// global variable to store the PID of the running process. Its externed in signals.h
 pid_t running_pid;
-pid_t suspended_pid;
-
-
-// signal handler for SIGINT (sent by control-c)
-void sigint_handler(int signum) {
-    if (running_pid != 0) {
-        cout << endl;
-        kill(running_pid, SIGINT);
-        int status;
-        waitpid(running_pid, &status, 0);
-        running_pid = 0;
-    } 
-}
-
-// signal handler for SIGTSTP (sent by control-z)
-void sigtstp_handler(int signum) {
-    if (running_pid != 0) {
-        cout << endl;
-        kill(running_pid, SIGTSTP);
-        int status;
-        waitpid(running_pid, &status, 0);
-        running_pid = 0;
-    }
-}
-
-
 
 int main(void) {
 
@@ -110,9 +84,7 @@ int main(void) {
                     perror("execvp");
                     exit(1);
                 } else {
-                    wait(NULL);
-
-                    
+                    wait(NULL);  
                 }
             }
         }
