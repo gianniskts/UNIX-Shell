@@ -13,19 +13,18 @@
 #include "./include/background.h"
 #include "./include/alias.h"
 #include "./include/signals.h"
+#include "./include/history.h"
 
 using namespace std;
 
 #define MAX_LINE 80 // The maximum length command 
-
-// global variable to store the PID of the running process. Its externed in signals.h
-pid_t running_pid;
-
 #define HISTORY_SIZE 20
 
 char* history[HISTORY_SIZE]; // array to store previous commands
 int history_index = 0; // current index in the history array
 
+// global variable to store the PID of the running process. Its externed in signals.h
+pid_t running_pid;
 
 int main(void) {
 
@@ -46,8 +45,7 @@ int main(void) {
         char users_command[MAX_LINE];
         fgets(users_command, MAX_LINE, stdin);
         // add command to history
-    history[history_index % HISTORY_SIZE] = strdup(users_command);
-    history_index++;
+        addHistory(users_command, history, &history_index);
         parseCommand(tokens, users_command);
 
         // check for exit command
@@ -55,30 +53,8 @@ int main(void) {
             break;
         }
 
-        // check for history command
-    if (strcmp(tokens[0], "history") == 0) {
-        // print previous commands with indices
-        for (int i = 0; i < history_index; i++) {
-            printf("%d: %s", i+1, history[i]);
-        }
-        continue;
-    }
-
-    
-
-    // execute command from history
-    if (tokens[0][0] == 'h') {
-        // execute command with index from history
-        int index = atoi(tokens[0]+1);
-        if (index <= 0 || index > history_index) {
-            printf("Invalid index.\n");
+        if (checkHistory(tokens, history, history_index))
             continue;
-        }
-        char* command = strdup(history[(index-1) % HISTORY_SIZE]);
-        // printf("%s", command);
-        parseCommand(tokens, command);
-        free(command);
-    }
 
         if (checkAlias(tokens, aliases, alias_count))   
             continue;
