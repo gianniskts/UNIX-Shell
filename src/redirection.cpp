@@ -33,29 +33,29 @@ void checkRedirection(char** tokens, int* redirect_input, int* redirect_output, 
 }
 
 void handleRedirection(int redirect_input, int redirect_output, char* input_file, char* output_file, int append_output) {
-      if (redirect_input) {
-                    // redirect input from a file
-                    int fd = open(input_file, O_RDONLY);
-                    if (fd == -1) {
-                        perror("open");
-                        exit(1);
-                    }
-                    dup2(fd, STDIN_FILENO);
-                    close(fd);
-                }
-                if (redirect_output) {
-                    // redirect output to a file
-                    int fd;
-                    if (append_output) {
-                        fd = open(output_file, O_CREAT | O_WRONLY | O_APPEND, 0666);
-                    } else {
-                        fd = open(output_file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-                    }
-                    if (fd == -1) {
-                        perror("open");
-                        exit(1);
-                    }
-                    dup2(fd, STDOUT_FILENO);
-                    close(fd);
-                }
-}
+    if (redirect_input) {
+        // redirect input from a file
+        int fd = open(input_file, O_RDONLY);
+        if (fd == -1) {
+            perror("open");
+            exit(1);
+        }
+        dup2(fd, STDIN_FILENO);
+        close(fd);
+    }
+    if (redirect_output) {
+        // redirect output to a file
+        int fd;
+        if (append_output) {
+            fd = open(output_file, O_CREAT | O_WRONLY | O_APPEND, 0666);
+        } else {
+            fd = open(output_file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+        }
+        if (fd == -1) {
+            perror("open");
+            exit(1);
+        }
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
+    }
+} 
