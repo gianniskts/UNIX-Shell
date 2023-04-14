@@ -21,6 +21,12 @@ using namespace std;
 // global variable to store the PID of the running process. Its externed in signals.h
 pid_t running_pid;
 
+#define HISTORY_SIZE 20
+
+char* history[HISTORY_SIZE]; // array to store previous commands
+int history_index = 0; // current index in the history array
+
+
 int main(void) {
 
     char* tokens[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
@@ -39,12 +45,50 @@ int main(void) {
         // read input from the user and parse it
         char users_command[MAX_LINE];
         fgets(users_command, MAX_LINE, stdin);
+        // add command to history
+    history[history_index % HISTORY_SIZE] = strdup(users_command);
+    history_index++;
         parseCommand(tokens, users_command);
 
         // check for exit command
         if (strcmp(tokens[0], "exit") == 0) {
             break;
         }
+
+        // check for history command
+    if (strcmp(tokens[0], "history") == 0) {
+        // print previous commands with indices
+        for (int i = 0; i < history_index; i++) {
+            printf("%d: %s\n", i+1, history[i]);
+        }
+        continue;
+    }
+
+    
+
+    // execute command from history
+    if (strcmp(tokens[0], "!!") == 0) {
+        if (history_index == 1) {
+            printf("No previous command.\n");
+            continue;
+        }
+        // get previous command from history
+        char* previous_command = strdup(history[(history_index - 2) % HISTORY_SIZE]);
+        printf("%s", previous_command);
+        parseCommand(tokens, previous_command);
+        free(previous_command);
+    } else if (tokens[0][0] == '!') {
+        // execute command with index from history
+        int index = atoi(tokens[0]+1);
+        if (index <= 0 || index > history_index) {
+            printf("Invalid index.\n");
+            continue;
+        }
+        char* command = strdup(history[(index-1) % HISTORY_SIZE]);
+        printf("%s", command);
+        parseCommand(tokens, command);
+        free(command);
+    }
 
         if (checkAlias(tokens, aliases, alias_count))   
             continue;
