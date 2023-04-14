@@ -21,10 +21,6 @@ using namespace std;
 // global variable to store the PID of the running process. Its externed in signals.h
 pid_t running_pid;
 
-#define MAX_HISTORY 100
-char history[MAX_HISTORY][MAX_LINE];
-int history_count = 0;
-
 int main(void) {
 
     char* tokens[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
@@ -49,35 +45,6 @@ int main(void) {
         if (strcmp(tokens[0], "exit") == 0) {
             break;
         }
-
-        // add the command to the history
-    if (strlen(users_command) > 1) {
-        strncpy(history[history_count % MAX_HISTORY], users_command, MAX_LINE);
-        history_count++;
-    }
-
-    // handle up and down arrow keys
-    if (users_command[0] == '\033' && users_command[1] == '[') {
-        if (users_command[2] == 'A') { // up arrow key
-            cout << "up" << endl;
-            if (history_count > 0) {
-                history_count--;
-                strncpy(users_command, history[history_count % MAX_HISTORY], MAX_LINE);
-                parseCommand(tokens, users_command);
-            }
-        } else if (users_command[2] == 'B') { // down arrow key
-            if (history_count < MAX_HISTORY) {
-                history_count++;
-                if (history_count < MAX_HISTORY) {
-                    strncpy(users_command, history[history_count % MAX_HISTORY], MAX_LINE);
-                } else {
-                    users_command[0] = '\0';
-                }
-                parseCommand(tokens, users_command);
-            }
-        }
-    }
-
 
         if (checkAlias(tokens, aliases, alias_count))   
             continue;
