@@ -24,7 +24,7 @@ pid_t suspended_pid;
 
 
 // signal handler for SIGINT (sent by control-c)
-__sighandler_t sigint_handler(pid_t running_pid) {
+void sigint_handler(int signum) {
     if (running_pid != 0) {
         cout << endl;
         kill(running_pid, SIGINT);
@@ -32,19 +32,17 @@ __sighandler_t sigint_handler(pid_t running_pid) {
         waitpid(running_pid, &status, 0);
         running_pid = 0;
     } 
-
-    return 0;
 }
 
 // signal handler for SIGTSTP (sent by control-z)
-__sighandler_t sigtstp_handler(pid_t running_pid, pid_t suspended_pid) {
+void sigtstp_handler(int signum) {
     if (running_pid != 0) {
+        cout << endl;
         kill(running_pid, SIGTSTP);
-        suspended_pid = running_pid;
+        int status;
+        waitpid(running_pid, &status, 0);
         running_pid = 0;
     }
-
-    return 0;
 }
 
 
@@ -57,8 +55,8 @@ int main(void) {
     int alias_count = 0; // number of aliases currently stored
 
     // set up the signal handler for SIGINT and SIGTSTP
-    signal(SIGINT, sigint_handler(running_pid));
-    signal(SIGTSTP, sigtstp_handler(running_pid, suspended_pid));
+    signal(SIGINT, sigint_handler);
+    signal(SIGTSTP, sigtstp_handler);
     
     while (true) {
         printf("in-mysh-now:>");
