@@ -67,17 +67,7 @@ int main(void) {
     
 
     // execute command from history
-    if (strcmp(tokens[0], "!!") == 0) {
-        if (history_index == 1) {
-            printf("No previous command.\n");
-            continue;
-        }
-        // get previous command from history
-        char* previous_command = strdup(history[(history_index - 2) % HISTORY_SIZE]);
-        printf("%s", previous_command);
-        parseCommand(tokens, previous_command);
-        free(previous_command);
-    } else if (tokens[0][0] == '!') {
+    if (tokens[0][0] == 'h') {
         // execute command with index from history
         int index = atoi(tokens[0]+1);
         if (index <= 0 || index > history_index) {
@@ -85,7 +75,7 @@ int main(void) {
             continue;
         }
         char* command = strdup(history[(index-1) % HISTORY_SIZE]);
-        printf("%s", command);
+        // printf("%s", command);
         parseCommand(tokens, command);
         free(command);
     }
