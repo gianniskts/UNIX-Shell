@@ -59,7 +59,7 @@ int main(void) {
     if (strcmp(tokens[0], "history") == 0) {
         // print previous commands with indices
         for (int i = 0; i < history_index; i++) {
-            printf("%d: %s\n", i+1, history[i]);
+            printf("%d: %s", i+1, history[i]);
         }
         continue;
     }
