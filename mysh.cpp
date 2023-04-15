@@ -49,10 +49,9 @@ int main(void) {
         parseCommand(tokens, users_command);
 
         // check for exit command
-        if (strcmp(tokens[0], "exit") == 0) {
+        if (strcmp(tokens[0], "exit") == 0) 
             break;
-        }
-
+        
         if (checkHistory(tokens, history, history_index))
             continue;
 
