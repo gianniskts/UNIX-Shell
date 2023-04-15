@@ -9,19 +9,19 @@ OBJECTS=$(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
 .PHONY: all clean
 
-all: main
+all: mysh
 
-main: $(OBJECTS) $(OBJDIR)/main.o
+mysh: $(OBJECTS) $(OBJDIR)/mysh.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/main.o: main.cpp | $(OBJDIR)
+$(OBJDIR)/mysh.o: mysh.cpp | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 clean:
-	rm -rf $(OBJDIR)/* main
+	rm -rf $(OBJDIR)/* mysh
