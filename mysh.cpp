@@ -58,16 +58,16 @@ int main(void) {
 
         // check for pipes in the command
         bool has_pipe = 0; // flag to check if there is a pipe in the command
-        handlePipe(tokens, &has_pipe);
+        handlePipe(tokens, &has_pipe); // handle pipes in the command
         
         // if theres no pipe, check for input/output redirection
         if (!has_pipe) {
             // check for input/output redirection
-            int redirect_input = 0;
-            int redirect_output = 0;
-            char* input_file = NULL;
-            char* output_file = NULL;
-            int append_output = 0;
+            bool redirect_input = 0; // flag to check if there is input redirection <
+            bool redirect_output = 0; // flag to check if there is output redirection >
+            bool append_output = 0; // flag to check if there is output redirection >>
+            char* input_file = NULL; // file to redirect input from
+            char* output_file = NULL; // file to redirect output to
            
             // check for input/output redirection
             checkRedirection(tokens, &redirect_input, &redirect_output, &input_file, &output_file, &append_output);

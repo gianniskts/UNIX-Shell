@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void checkRedirection(char** tokens, bool* redirect_input, bool* redirect_output, char** input_file, char** output_file, int* append_output) {
+void checkRedirection(char** tokens, bool* redirect_input, bool* redirect_output, char** input_file, char** output_file, bool* append_output) {
     int j = 0;
     while (tokens[j] != NULL) {
         if (strcmp(tokens[j], "<") == 0) {

@@ -50,11 +50,11 @@ void handlePipe(char** tokens, bool* has_pipe) {
                     close(pipefd[1]); // close the write end of the pipe
                     dup2(pipefd[0], STDIN_FILENO); // redirect stdin to the read end of the pipe
                     // check for input/output redirection
-                    int redirect_input = 0;
-                    int redirect_output = 0;
+                    bool redirect_input = 0;
+                    bool redirect_output = 0;
+                    bool append_output = 0;
                     char* input_file = NULL;
                     char* output_file = NULL;
-                    int append_output = 0;
                     
                     checkRedirection(args2, &redirect_input, &redirect_output, &input_file, &output_file, &append_output);
 

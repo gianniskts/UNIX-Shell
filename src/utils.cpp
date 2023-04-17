@@ -9,17 +9,6 @@
 #include <glob.h>
 #include "../include/utils.h"
 
-// void parseCommand(char** tokens, char* users_command) {
-//      // Parse the input command string into a vector of tokens (arguments).
-//         char* token = strtok(users_command, " \n");
-//         int i = 0;
-//         while (token != NULL) {
-//             tokens[i++] = token;
-//             token = strtok(NULL, " \n");
-//         }
-//         tokens[i] = NULL;
-// } 
-
 void parseCommand(char** tokens, char* command) {
     char* token = strtok(command, " \n"); // tokenize the command string
 
