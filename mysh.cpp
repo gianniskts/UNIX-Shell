@@ -41,20 +41,19 @@ int main(void) {
         fflush(stdout);          // flush the output buffer
 
         // read input from the user and parse it
-        char users_command[MAX_LINE];
-        fgets(users_command, MAX_LINE, stdin);
+        char users_command[MAX_LINE];          // buffer to store the user's command
+        fgets(users_command, MAX_LINE, stdin); // read the user's command from stdin and store it in users_command
         // add command to history
-        addHistory(users_command, history, &history_index);
-        parseCommand(tokens, users_command);
+        addHistory(users_command, history, &history_index); // add the command to the history array
+        parseCommand(tokens, users_command);                // parse the command and store the tokens in tokens array
 
-        // check for exit command
-        if (strcmp(tokens[0], "exit") == 0) 
+        if (strcmp(tokens[0], "exit") == 0)  // if the user entered exit, exit the shell
             break;
         
-        if (checkHistory(tokens, history, history_index))
+        if (checkHistory(tokens, history, history_index)) // check if the user entered a history command
             continue;
 
-        if (checkAlias(tokens, aliases, alias_count))   
+        if (checkAlias(tokens, aliases, alias_count)) // check if the user entered an alias command
             continue;
 
         // check for pipes in the command
