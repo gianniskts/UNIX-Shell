@@ -14,11 +14,11 @@ using namespace std;
 #define MAX_LINE 80 // The maximum length command 
 
 
-void handlePipe(char** tokens, int* has_pipe) {
+void handlePipe(char** tokens, bool* has_pipe) {
      int j = 0;
         while (tokens[j] != NULL) {
             if (strcmp(tokens[j], "|") == 0) {
-                *has_pipe = 1;
+                *has_pipe = true;
                 tokens[j] = NULL;
                 // create a new array for the second subcommand
                 char* args2[MAX_LINE / 2 + 1];

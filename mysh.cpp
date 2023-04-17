@@ -57,7 +57,7 @@ int main(void) {
             continue;
 
         // check for pipes in the command
-        int has_pipe = 0;
+        bool has_pipe = 0; // flag to check if there is a pipe in the command
         handlePipe(tokens, &has_pipe);
         
         // if theres no pipe, check for input/output redirection

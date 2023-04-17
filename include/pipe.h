@@ -1,1 +1,1 @@
-void handlePipe(char** tokens, int* has_pipe);
+void handlePipe(char** tokens, bool* has_pipe);
