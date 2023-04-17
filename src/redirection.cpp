@@ -11,28 +11,28 @@
 
 using namespace std;
 
-void checkRedirection(char** tokens, int* redirect_input, int* redirect_output, char** input_file, char** output_file, int* append_output) {
+void checkRedirection(char** tokens, bool* redirect_input, bool* redirect_output, char** input_file, char** output_file, int* append_output) {
     int j = 0;
     while (tokens[j] != NULL) {
         if (strcmp(tokens[j], "<") == 0) {
-            *redirect_input = 1;
+            *redirect_input = true;
             *input_file = tokens[j + 1];
             tokens[j] = NULL;
         } else if (strcmp(tokens[j], ">") == 0) {
-            *redirect_output = 1;
+            *redirect_output = true;
             *output_file = tokens[j + 1];
             tokens[j] = NULL;
         } else if (strcmp(tokens[j], ">>") == 0) {
-            *redirect_output = 1;
+            *redirect_output = true;
             *output_file = tokens[j + 1];
-            *append_output = 1;
+            *append_output = true;
             tokens[j] = NULL;
         }
         j++;
     }
 }
 
-void handleRedirection(int redirect_input, int redirect_output, char* input_file, char* output_file, int append_output) {
+void handleRedirection(bool redirect_input, bool redirect_output, char* input_file, char* output_file, bool append_output) {
     if (redirect_input) {
         // redirect input from a file
         int fd = open(input_file, O_RDONLY);
