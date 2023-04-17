@@ -17,14 +17,13 @@
 
 using namespace std;
 
-#define MAX_LINE 80 // The maximum length command 
-#define HISTORY_SIZE 20
+#define MAX_LINE 80     // The maximum length command 
+#define HISTORY_SIZE 20 // Τhe maximum number of commands to store in history
 
 char* history[HISTORY_SIZE]; // array to store previous commands
-int history_index = 0; // current index in the history array
+int history_index = 0;       // current index in the history array
 
-// global variable to store the PID of the running process. Its externed in signals.h
-pid_t running_pid;
+pid_t running_pid; // global variable to store the PID of the running process. Its externed in signals.h
 
 int main(void) {
 
@@ -34,12 +33,12 @@ int main(void) {
     int alias_count = 0; // number of aliases currently stored
 
     // set up the signal handler for SIGINT and SIGTSTP
-    signal(SIGINT, sigint_handler);
-    signal(SIGTSTP, sigtstp_handler);
+    signal(SIGINT, sigint_handler);   // ctrl-c
+    signal(SIGTSTP, sigtstp_handler); // ctrl-z
     
     while (true) {
-        printf("in-mysh-now:>");
-        fflush(stdout);
+        printf("in-mysh-now:>"); // print the prompt 
+        fflush(stdout);          // flush the output buffer
 
         // read input from the user and parse it
         char users_command[MAX_LINE];
