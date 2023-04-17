@@ -74,24 +74,24 @@ int main(void) {
 
             // check for background process
             // TODO: check for background process in pipes etc
-            pid_t bg_pid;
-            bool background = checkBackground(tokens, &bg_pid);
-            checkFinishedBackground(bg_pid, background);
+            pid_t bg_pid; // pid of the background process
+            bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
+            checkFinishedBackground(bg_pid, background); // check if the background process has finished
 
-            if (!background) {
+            if (!background) { 
                 // execute the command with input/output redirection
-                pid_t pid = fork();
-                running_pid = pid;
+                pid_t pid = fork(); 
+                running_pid = pid; // store the pid of the running process
 
-                if (pid == 0) {
-                    if (redirect_input || redirect_output) {
+                if (pid == 0) { // child process
+                    if (redirect_input || redirect_output) { // if there is input/output redirection
                         handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
                     }
-                    execvp(tokens[0], tokens);
+                    execvp(tokens[0], tokens); // execute the command
                     perror("execvp");
                     exit(1);
                 } else {
-                    wait(NULL);  
+                    wait(NULL); // wait for the child process to finish
                 }
             }
         }
