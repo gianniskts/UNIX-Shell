@@ -49,6 +49,16 @@ int main(void) {
 
         if (strcmp(tokens[0], "exit") == 0)  // if the user entered exit, exit the shell
             break;
+
+        if (strcmp(tokens[0], "cd") == 0) { // if the user entered cd, change the directory
+            if (tokens[1] != NULL && strcmp(tokens[1], "..") == 0) { // check if the second token is ".."
+                chdir(".."); // change to the parent directory
+            } else if (chdir(tokens[1]) != 0) { // call chdir() with the second token (path to change to)
+                perror("cd"); // if chdir() failed, print an error message
+            }
+            continue; // continue to the next iteration of the while loop
+        }
+
         
         if (checkHistory(tokens, history, history_index)) // check if the user entered a history command
             continue;
