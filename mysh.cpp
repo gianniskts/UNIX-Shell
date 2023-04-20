@@ -25,6 +25,24 @@ int history_index = 0;       // current index in the history array
 
 pid_t running_pid; // global variable to store the PID of the running process. Its externed in signals.h
 
+// int checkKeyWords(char** tokens) {
+//     cout << tokens[0] << endl;
+//     if (strcmp(tokens[0], "exit") == 0) { // if the user entered exit, exit the shell
+//         return -1;
+//     }
+//     if (strcmp(tokens[0], "cd") == 0) { // if the user entered cd, change the directory
+//         if (tokens[1] != NULL && strcmp(tokens[1], "..") == 0) { // check if the second token is ".."
+//             chdir(".."); // change to the parent directory
+//         } else if (chdir(tokens[1]) != 0) { // call chdir() with the second token (path to change to)
+//             perror("cd"); // if chdir() failed, print an error message
+//         }
+//         return 1;
+//     }
+//     // TODO: implement other commands
+//     return 0;
+// }
+
+
 int main(void) {
 
     char* tokens[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
