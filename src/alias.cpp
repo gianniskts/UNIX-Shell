@@ -13,10 +13,9 @@ using namespace std;
 
 #define MAX_LINE 80 // The maximum length command 
 
-
 bool checkAlias(char* tokens[], char* aliases[][2], int& alias_count) {
     if (strcmp(tokens[0], "createalias") == 0 && tokens[1] != NULL && tokens[2] != NULL) {
-        aliases[alias_count][0] = strdup(tokens[1]);
+        aliases[alias_count][0] = strdup(tokens[1]); 
         aliases[alias_count][1] = strdup(tokens[2]);
         alias_count++;
         return true;
