@@ -71,5 +71,5 @@ void handlePipe(char** tokens, bool* has_pipe) {
             break; // exit the loop since we've already executed the command
         }
             j++;
-        }
+    }
 }
