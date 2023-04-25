@@ -99,9 +99,9 @@ Implementation
 Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης signal() από τη βιβλιοθήκη signal.h. Ορίστικαν οι signal handlers sigint_handler() και sigtstp_handler() για ^C και ^Ζ αντίστοιχα οι οποίες τερματίζουν την τρεχούμενη διεργασία.
 
 -----------------------------History-----------------------------
-Examples; 1) in-mysh-now:>^Z
-	  2) in-mysh-now:>^C
+Examples; 1) in-mysh-now:>history
+	  2) in-mysh-now:>h2
 	 
 Implementation
-Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης signal() από τη βιβλιοθήκη signal.h. Ορίστικαν οι signal handlers sigint_handler() και sigtstp_handler() για ^C και ^Ζ αντίστοιχα οι οποίες τερματίζουν την τρεχούμενη διεργασία.
+Η διαχείρηση του ιστορικού γίνεται μέσω της συνάρτησης addHistory() η οποία προσθέτει κάθε εντολή του χρήστη στον πίνακα ιστορικού history[]. Μέσω της checkHistory() όταν ο χρήστης πληκτρολογήσει history μπορεί να δει το ιστορικό του και πληκτρολογώντας h{index} (πχ. h1) μπορεί να εκτελέσει την εντολή ιστορικού index.
 
