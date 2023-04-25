@@ -21,7 +21,7 @@ bool checkBackground(char** tokens, pid_t* pid) {
     while (tokens[i] != NULL) { // iterate through the tokens to find the background symbol
         if (strcmp(tokens[i], "&") == 0) {
             background = true;
-            tokens[i] = NULL;
+            tokens[i] = NULL; // set the token to NULL so that execvp() doesn't try to execute it
             break;
         }
         i++;
@@ -29,12 +29,12 @@ bool checkBackground(char** tokens, pid_t* pid) {
 
     // if background process, fork and execute
     if (background) {
-        *pid = fork();
+        *pid = fork(); // pid is stored in the parent process to be killed when it finishes
         if (*pid < 0) {
             perror("fork failed");
         } else if (*pid == 0) {
             // child process
-            execvp(tokens[0], tokens);
+            execvp(tokens[0], tokens); // execute the process in background
             perror("execvp failed");
             exit(EXIT_FAILURE);
         } else {
@@ -49,9 +49,9 @@ bool checkBackground(char** tokens, pid_t* pid) {
 
 void checkFinishedBackground(pid_t bg_pid, bool background) {
     while (background) {
-        int status;
-        pid_t result = waitpid(bg_pid, &status, WNOHANG);
-        if (result == bg_pid) {
+        int status; 
+        pid_t result = waitpid(bg_pid, &status, WNOHANG); // checks if it has finished
+        if (result == bg_pid) { 
             // background process has finished
             printf("Background process with PID %d has finished\n", bg_pid);
             break;
