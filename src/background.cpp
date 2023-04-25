@@ -39,7 +39,7 @@ bool checkBackground(char** tokens, pid_t* pid) {
             exit(EXIT_FAILURE);
         } else {
             // parent process
-            printf("Background process started with PID %d\n", *pid);
+            cout << "Background process started with PID " << *pid << endl;
             // doesnt wait for child process to finish because it runs on background
         }
     }
