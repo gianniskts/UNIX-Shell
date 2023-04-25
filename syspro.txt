@@ -97,3 +97,11 @@ Examples; 1) in-mysh-now:>^Z
 	 
 Implementation
 Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης signal() από τη βιβλιοθήκη signal.h. Ορίστικαν οι signal handlers sigint_handler() και sigtstp_handler() για ^C και ^Ζ αντίστοιχα οι οποίες τερματίζουν την τρεχούμενη διεργασία.
+
+-----------------------------History-----------------------------
+Examples; 1) in-mysh-now:>^Z
+	  2) in-mysh-now:>^C
+	 
+Implementation
+Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης signal() από τη βιβλιοθήκη signal.h. Ορίστικαν οι signal handlers sigint_handler() και sigtstp_handler() για ^C και ^Ζ αντίστοιχα οι οποίες τερματίζουν την τρεχούμενη διεργασία.
+
