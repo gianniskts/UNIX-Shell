@@ -15,10 +15,10 @@ using namespace std;
 
 bool checkBackground(char** tokens, pid_t* pid) {
     // check for background process
-    bool background = false;
+    bool background = false; // flag to indicate if the process is a background process
 
     int i = 0;
-    while (tokens[i] != NULL) {
+    while (tokens[i] != NULL) { // iterate through the tokens to find the background symbol
         if (strcmp(tokens[i], "&") == 0) {
             background = true;
             tokens[i] = NULL;
