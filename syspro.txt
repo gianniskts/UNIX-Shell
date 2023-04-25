@@ -89,5 +89,4 @@ Examples; 1) in-mysh-now:>createalias myalias ls
 	  2) in-mysh-now:>destroyalias myalias
 	 
 Implementation
-Η διαχείρηση των wildcards γίνεται στο αρχικό parsing. Άμα ανειχνευτεί ένας από τους 2 χαρακτήρες των wildcards τότε μέσω της βιβλιοθήκης glob.h βρίσκονται όλα τα patterns που ταιριάζουν με την είσοδο του χρήστη.
-
+Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης checkAlias() η οποία ελέγχει τον πίνακα tokens για τα tokens createalias, destroyalias και προσθέτει τα aliases στον πίνακα aliases. Για κάθε input του χρήστη διασχίζεται ο πίνακας aliases για να διακρίνει αν το token του χρήστη είναι aliased ή όχι.
