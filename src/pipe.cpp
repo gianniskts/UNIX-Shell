@@ -30,21 +30,21 @@ void handlePipe(char** tokens, bool* has_pipe) {
             args2[l] = NULL; // set the last token to NULL so that execvp() doesn't try to execute it
 
             // execute the two subcommands in a pipeline
-            int pipefd[2];
+            int pipefd[2]; // the file descriptors for the read and write ends of the pipe
             if (pipe(pipefd) == -1) {
                 perror("pipe");
                 exit(1);
             }
-            pid_t pid1 = fork();
+            pid_t pid1 = fork(); // create the first child process
             if (pid1 == 0) {
                 // child process 1
                 close(pipefd[0]); // close the read end of the pipe
                 dup2(pipefd[1], STDOUT_FILENO); // redirect stdout to the write end of the pipe
-                execvp(tokens[0], tokens);
+                execvp(tokens[0], tokens); // execute the first subcommand
                 perror("execvp");
                 exit(1);
             }
-            pid_t pid2 = fork();
+            pid_t pid2 = fork(); // create the second child process
             if (pid2 == 0) {
                 // child process 2
                 close(pipefd[1]); // close the write end of the pipe
