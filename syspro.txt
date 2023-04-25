@@ -53,7 +53,7 @@ Implementation
 12.	Χειρίζεται την ανακατεύθυνση αν υπάρχει
 13.	Κάνει exec την tokenized εντολή 
 
------------------------------Υλοποίηση Redirection-----------------------------
+-----------------------------Redirection-----------------------------
 Example; 1) in-mysh-now:>ls -l > out.txt
 	 2) in-mysh-now:>sort < input.txt > out.txt
 	 3) in-mysh-now:>cat input.txt >> out2.txt
