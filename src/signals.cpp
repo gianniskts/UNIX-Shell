@@ -12,20 +12,20 @@ using namespace std;
 
 // signal handler for SIGINT (sent by control-c)
 void sigint_handler(int signum) {
-    if (running_pid != 0) {
+    if (running_pid != 0) { // if there is a running process
         cout << endl;
-        kill(running_pid, SIGINT);
-        int status;
-        waitpid(running_pid, &status, 0);
-        running_pid = 0;
+        kill(running_pid, SIGINT); // kill the running process
+        int status; 
+        waitpid(running_pid, &status, 0); 
+        running_pid = 0; 
     } 
 }
 
 // signal handler for SIGTSTP (sent by control-z)
-void sigtstp_handler(int signum) {
-    if (running_pid != 0) {
+void sigtstp_handler(int signum) { 
+    if (running_pid != 0) { // if there is a running process
         cout << endl;
-        kill(running_pid, SIGTSTP);
+        kill(running_pid, SIGTSTP); // kill the running process
         int status;
         waitpid(running_pid, &status, 0);
         running_pid = 0;
