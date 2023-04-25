@@ -33,8 +33,8 @@ int main(void) {
     int alias_count = 0; // number of aliases currently stored
 
     // set up the signal handler for SIGINT and SIGTSTP
-    signal(SIGINT, sigint_handler);   // ctrl-c
-    signal(SIGTSTP, sigtstp_handler); // ctrl-z
+    signal(SIGINT, sigint_handler);   // when ctrl-c it triggers the sigint_handler function 
+    signal(SIGTSTP, sigtstp_handler); // when ctrl-z it triggers the sigtstp_handler function
     
     while (true) {
         printf("in-mysh-now:>"); // print the prompt 
