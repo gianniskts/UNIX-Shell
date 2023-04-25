@@ -16,18 +16,18 @@ using namespace std;
 
 void handlePipe(char** tokens, bool* has_pipe) {
     int j = 0;
-    while (tokens[j] != NULL) {
+    while (tokens[j] != NULL) { // iterate through the tokens to find the pipe symbol
         if (strcmp(tokens[j], "|") == 0) {
             *has_pipe = true;
-            tokens[j] = NULL;
+            tokens[j] = NULL; // set the token to NULL so that execvp() doesn't try to execute it
             // create a new array for the second subcommand
-            char* args2[MAX_LINE / 2 + 1];
-            int k = j + 1;
-            int l = 0;
-            while (tokens[k] != NULL) {
+            char* args2[MAX_LINE / 2 + 1]; // the maximum number of arguments for the second subcommand is half of the maximum number of arguments for the entire command
+            int k = j + 1; // the index of the first token of the second subcommand
+            int l = 0; // the index of the current token of the second subcommand
+            while (tokens[k] != NULL) { // copy the tokens of the second subcommand into the new array
                 args2[l++] = tokens[k++];
             }
-            args2[l] = NULL;
+            args2[l] = NULL; // set the last token to NULL so that execvp() doesn't try to execute it
 
             // execute the two subcommands in a pipeline
             int pipefd[2];
