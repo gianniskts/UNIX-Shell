@@ -58,7 +58,6 @@ int main(void) {
             }
             continue; // continue to the next iteration of the while loop
         }
-
         
         if (checkHistory(tokens, history, history_index)) // check if the user entered a history command
             continue;
