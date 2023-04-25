@@ -13,8 +13,8 @@ using namespace std;
 
 #define MAX_LINE 80 // The maximum length command 
 
-
 void handlePipe(char** tokens, bool* has_pipe) {
+
     int j = 0;
     while (tokens[j] != NULL) { // iterate through the tokens to find the pipe symbol
         if (strcmp(tokens[j], "|") == 0) {
@@ -35,6 +35,7 @@ void handlePipe(char** tokens, bool* has_pipe) {
                 perror("pipe");
                 exit(1);
             }
+
             pid_t pid1 = fork(); // create the first child process
             if (pid1 == 0) {
                 // child process 1
@@ -44,6 +45,7 @@ void handlePipe(char** tokens, bool* has_pipe) {
                 perror("execvp");
                 exit(1);
             }
+            
             pid_t pid2 = fork(); // create the second child process
             if (pid2 == 0) {
                 // child process 2
