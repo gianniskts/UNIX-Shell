@@ -53,7 +53,7 @@ void checkFinishedBackground(pid_t bg_pid, bool background) {
         pid_t result = waitpid(bg_pid, &status, WNOHANG); // checks if it has finished
         if (result == bg_pid) { 
             // background process has finished
-            printf("Background process with PID %d has finished\n", bg_pid);
+            cout << "Background process with PID " << bg_pid << " has finished" << endl;
             break;
         } else if (result == -1) {
             // error

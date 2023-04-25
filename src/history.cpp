@@ -34,11 +34,10 @@ bool checkHistory(char* tokens[], char* history[], int history_index) {
         // execute command with index from history
         int index = atoi(tokens[0]+1);
         if (index <= 0 || index > history_index) {
-            printf("Invalid index.\n");
+            cout << "Invalid index." << endl;
             return true;
         }
         char* command = strdup(history[(index-1) % HISTORY_SIZE]);
-        // printf("%s", command);
         parseCommand(tokens, command);
         free(command);
     }
