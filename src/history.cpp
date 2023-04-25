@@ -24,7 +24,7 @@ bool checkHistory(char* tokens[], char* history[], int history_index) {
     if (strcmp(tokens[0], "history") == 0) {
         // print previous commands with indices
         for (int i = 0; i < history_index; i++) {
-            printf("%d: %s", i+1, history[i]);
+            cout << i+1 << ": " << history[i] << endl;
         }
         return true;
     }
