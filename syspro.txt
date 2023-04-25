@@ -83,3 +83,11 @@ Examples; 1) in-mysh-now:>ls *.t?t
 	 
 Implementation
 Η διαχείρηση των wildcards γίνεται στο αρχικό parsing. Άμα ανειχνευτεί ένας από τους 2 χαρακτήρες των wildcards τότε μέσω της βιβλιοθήκης glob.h βρίσκονται όλα τα patterns που ταιριάζουν με την είσοδο του χρήστη.
+
+-----------------------------Aliases-----------------------------
+Examples; 1) in-mysh-now:>createalias myalias ls
+	  2) in-mysh-now:>destroyalias myalias
+	 
+Implementation
+Η διαχείρηση των wildcards γίνεται στο αρχικό parsing. Άμα ανειχνευτεί ένας από τους 2 χαρακτήρες των wildcards τότε μέσω της βιβλιοθήκης glob.h βρίσκονται όλα τα patterns που ταιριάζουν με την είσοδο του χρήστη.
+
