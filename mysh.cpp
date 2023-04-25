@@ -82,7 +82,6 @@ int main(void) {
             checkRedirection(tokens, &redirect_input, &redirect_output, &input_file, &output_file, &append_output);
 
             // check for background process
-            // TODO: check for background process in pipes etc
             pid_t bg_pid; // pid of the background process
             bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
             checkFinishedBackground(bg_pid, background); // check if the background process has finished
