@@ -54,9 +54,17 @@ Implementation
 13.	Κάνει exec την tokenized εντολή 
 
 -----------------------------Redirection-----------------------------
-Example; 1) in-mysh-now:>ls -l > out.txt
+Examples; 1) in-mysh-now:>ls -l > out.txt
 	 2) in-mysh-now:>sort < input.txt > out.txt
 	 3) in-mysh-now:>cat input.txt >> out2.txt
+	 
+Implementation
+Η συνάρτηση checkRedirection() διασχίζει τον πίνακα tokens για να αναγνωρίσει σύμβολα ανακατεύθυνσης και τροποποιεί τα flags ανάλογα.
+Η handleRedirection() χειρίζεται την ανακατεύθυνση κάνοντας open και dup2 τα αρχεία εισόδου - εξόδου. Ειδικά για την έξοδο, αν το σύμβολο είναι ">" τότε κάνει append αλλιώς αν είναι ">>" τότε κάνει truncate.
+
+-----------------------------Pipes-----------------------------
+Examples; 1) in-mysh-now:>cat input.txt | sort > out3.txt
+	 2) in-mysh-now:>cat input.txt input2.txt | sort > out3.txt
 	 
 Implementation
 Η συνάρτηση checkRedirection() διασχίζει τον πίνακα tokens για να αναγνωρίσει σύμβολα ανακατεύθυνσης και τροποποιεί τα flags ανάλογα.

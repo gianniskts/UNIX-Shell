@@ -14,7 +14,6 @@ using namespace std;
 #define MAX_LINE 80 // The maximum length command 
 
 void handlePipe(char** tokens, bool* has_pipe) {
-
     int j = 0;
     while (tokens[j] != NULL) { // iterate through the tokens to find the pipe symbol
         if (strcmp(tokens[j], "|") == 0) {
