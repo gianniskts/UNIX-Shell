@@ -72,10 +72,10 @@ int main(void) {
         // if theres no pipe, check for input/output redirection
         if (!has_pipe) {
             // check for input/output redirection
-            bool redirect_input = 0; // flag to check if there is input redirection <
+            bool redirect_input = 0;  // flag to check if there is input redirection <
             bool redirect_output = 0; // flag to check if there is output redirection >
-            bool append_output = 0; // flag to check if there is output redirection >>
-            char* input_file = NULL; // file to redirect input from
+            bool append_output = 0;   // flag to check if there is output redirection >>
+            char* input_file = NULL;  // file to redirect input from
             char* output_file = NULL; // file to redirect output to
            
             // check for input/output redirection
