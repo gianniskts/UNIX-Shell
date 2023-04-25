@@ -90,3 +90,10 @@ Examples; 1) in-mysh-now:>createalias myalias ls
 	 
 Implementation
 Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης checkAlias() η οποία ελέγχει τον πίνακα tokens για τα tokens createalias, destroyalias και προσθέτει τα aliases στον πίνακα aliases. Για κάθε input του χρήστη διασχίζεται ο πίνακας aliases για να διακρίνει αν το token του χρήστη είναι aliased ή όχι.
+
+-----------------------------Signals-----------------------------
+Examples; 1) in-mysh-now:>^Z
+	  2) in-mysh-now:>^C
+	 
+Implementation
+Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης signal() από τη βιβλιοθήκη signal.h. Ορίστικαν οι signal handlers sigint_handler() και sigtstp_handler() για ^C και ^Ζ αντίστοιχα οι οποίες τερματίζουν την τρεχούμενη διεργασία.
