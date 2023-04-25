@@ -14,7 +14,7 @@ void parseCommand(char** tokens, char* command) {
 
     int i = 0;
     while (token != NULL) { // loop through each token in the command
-        glob_t paths; // create a glob_t structure to store the matched paths
+        glob_t paths; // a glob_t structure to store the matched paths
         int flags = 0;
 
         if (strchr(token, '*') != NULL || strchr(token, '?') != NULL) { // check if the token contains wildcards
@@ -28,7 +28,7 @@ void parseCommand(char** tokens, char* command) {
 
             globfree(&paths); // free the memory allocated by glob
         } else {
-            tokens[i++] = strdup(token); // add the token to the tokens array as-is
+            tokens[i++] = strdup(token); // add the token to the tokens array as it is
         }
 
         token = strtok(NULL, " \n"); // move to the next token
