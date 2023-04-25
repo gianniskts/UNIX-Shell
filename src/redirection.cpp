@@ -35,12 +35,12 @@ void checkRedirection(char** tokens, bool* redirect_input, bool* redirect_output
 void handleRedirection(bool redirect_input, bool redirect_output, char* input_file, char* output_file, bool append_output) {
     if (redirect_input) {
         // redirect input from a file
-        int fd = open(input_file, O_RDONLY); // uses this flag to open the file for reading only
+        int fd = open(input_file, O_RDONLY); // opens the input file and stores its file descriptor
         if (fd == -1) { 
             perror("open");
             exit(1);
         }
-        dup2(fd, STDIN_FILENO); // duplicate the file descriptor fd to the standard input
+        dup2(fd, STDIN_FILENO); // duplicate the file descriptor fd of input file to the standard input
         close(fd); 
     }
     if (redirect_output) {
@@ -55,7 +55,7 @@ void handleRedirection(bool redirect_input, bool redirect_output, char* input_fi
             perror("open");
             exit(1);
         }
-        dup2(fd, STDOUT_FILENO);
+        dup2(fd, STDOUT_FILENO); 
         close(fd);
     }
 } 
