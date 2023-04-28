@@ -30,7 +30,7 @@ bool checkHistory(char* tokens[], char* history[], int history_index) {
     }
 
     // execute command from history
-    if (tokens[0][0] == 'h') { 
+    if (tokens[0][0] == 'myhistory') { 
         // execute command with index from history
         int index = atoi(tokens[0]+1); // convert the index from string to int
         if (index <= 0 || index > history_index) { // check if the index is valid
