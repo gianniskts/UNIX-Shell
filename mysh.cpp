@@ -7,7 +7,9 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
-#include "./include/utils.h"
+#include <glob.h> // glob() and globfree() functions
+
+// #include "./include/utils.h"
 #include "./include/redirection.h"
 #include "./include/pipe.h"
 #include "./include/background.h"
@@ -24,6 +26,49 @@ char* history[HISTORY_SIZE]; // array to store previous commands
 int history_index = 0;       // current index in the history array
 
 pid_t running_pid; // global variable to store the PID of the running process. Its externed in signals.h
+
+void parseCommand(char** tokens, char* command, char** next_command, bool* next_command_flag) {
+    char* token = strtok(command, " \n"); // tokenize the command string
+
+    int i = 0;
+    while (token != NULL) { // loop through each token in the command
+        glob_t paths; // a glob_t structure to store the matched paths
+        int flags = 0;
+
+        if (strchr(token, '*') != NULL || strchr(token, '?') != NULL) { // check if the token contains wildcards
+            flags |= GLOB_TILDE; // set the GLOB_TILDE flag to expand tilde characters
+            glob(token, flags, NULL, &paths); // expand the wildcard pattern using glob
+
+            // loop through the matching paths and add them to the tokens array
+            for (int j = 0; j < paths.gl_pathc; j++) {
+                tokens[i++] = strdup(paths.gl_pathv[j]);
+            }
+
+            globfree(&paths); // free the memory allocated by glob
+        } else if (strcmp(token, ";") == 0) {
+            tokens[i] = NULL; // set the last token of the current command to NULL
+            i = 0; // reset the token counter for the next command
+            *next_command_flag = true; // set the flag to indicate that a next command exists
+
+            // copy the remaining tokens to the next_command array
+            while ((token = strtok(NULL, " \n")) != NULL) {
+                if (strcmp(token, ";") == 0) {
+                    break; // stop copying tokens if another semicolon is found
+                }
+                next_command[i++] = strdup(token);
+            }
+            next_command[i] = NULL; // set the last element of next_command to NULL
+            break; // exit the loop
+        } else {
+            tokens[i++] = strdup(token); // add the token to the tokens array as it is
+        }
+
+        token = strtok(NULL, " \n"); // move to the next token
+    }
+
+    tokens[i] = NULL; // add a NULL terminator to the end of the tokens array
+}
+
 
 int main(void) {
 
@@ -45,7 +90,9 @@ int main(void) {
         fgets(users_command, MAX_LINE, stdin); // read the user's command from stdin and store it in users_command
         // add command to history
         addHistory(users_command, history, &history_index); // add the command to the history array
-        parseCommand(tokens, users_command);                // parse the command and store the tokens in tokens array
+        char* next_command[MAX_LINE]; // buffer to store the next command if the user entered a semicolon
+        bool next_command_flag = false; // flag to check if the user entered a semicolon
+        parseCommand(tokens, users_command, next_command, &next_command_flag);                // parse the command and store the tokens in tokens array
 
         if (strcmp(tokens[0], "exit") == 0)  // if the user entered exit, exit the shell
             break;
@@ -86,29 +133,6 @@ int main(void) {
             bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
             checkFinishedBackground(bg_pid, background); // check if the background process has finished
 
-            // execute multiple commands in one line
-            int i = 0;
-            bool next_command_flag = false;
-            char* next_command[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
-
-            while (tokens[i] != NULL) { // loop through all tokens
-                if (strcmp(tokens[i], ";") == 0) { // if a semicolon is found
-                tokens[i] = NULL; // set it to NULL to separate the commands
-                i++; // increment i to point to the next command
-                int j;
-                for (j = 0; tokens[i] != NULL; j++) { // copy the first command to the next_command array
-                    next_command[j] = tokens[i];
-                    i++;
-                }
-                next_command[j] = NULL; // set the last element to NULL
-                
-                next_command_flag = true; // set the flag to true
-                break; // break out of the loop
-                } else {
-                    i++;
-                }
-            }
-
             if (!background) { 
                 // execute the command with input/output redirection
                 pid_t pid = fork(); 
@@ -118,16 +142,18 @@ int main(void) {
                     if (redirect_input || redirect_output) { // if there is input/output redirection
                         handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
                     }
-                    if (!next_command_flag) {
-                        execvp(tokens[0], tokens); // execute the command
+
+                    if (next_command_flag) {
+                        execvp(tokens[0], tokens); // execute the first command
+                        execvp(next_command[0], next_command); // execute the next command
                         perror("execvp");
                         exit(1);
                     } else {
                         execvp(tokens[0], tokens); // execute the command
-                        execvp(next_command[0], next_command); // execute the command
                         perror("execvp");
                         exit(1);
                     }
+
                 } else {
                     wait(NULL); // wait for the child process to finish
                 }
