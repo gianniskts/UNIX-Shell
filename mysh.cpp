@@ -108,8 +108,6 @@ int main(void) {
                     i++;
                 }
             }
-            char* tokens2[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
-            parseCommand(tokens2, users_command); // parse the command again to remove the semicolon
 
             if (!background) { 
                 // execute the command with input/output redirection
@@ -125,20 +123,11 @@ int main(void) {
                         perror("execvp");
                         exit(1);
                     } else {
-                        cout << tokens << endl;
-                        cout << tokens2 << endl;
                         execvp(tokens[0], tokens); // execute the command
-                        execvp(tokens2[0], tokens2); // execute the command
-
-                    //     pid_t pid = fork();
-                    //     if (pid == 0) {
-                    //         execvp(tokens2[0], tokens2); // execute the command
-                    //         perror("execvp");
-                    //         exit(1);
-                    //     } else {
-                    //         wait(NULL); // wait for the child process to finish
-                    //     }
-                    // }
+                        execvp(next_command[0], next_command); // execute the command
+                        perror("execvp");
+                        exit(1);
+                    }
                 } else {
                     wait(NULL); // wait for the child process to finish
                 }
