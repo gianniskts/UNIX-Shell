@@ -86,6 +86,31 @@ int main(void) {
             bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
             checkFinishedBackground(bg_pid, background); // check if the background process has finished
 
+            // execute multiple commands in one line
+            int i = 0;
+            bool next_command_flag = false;
+            char* next_command[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
+
+            while (tokens[i] != NULL) { // loop through all tokens
+                if (strcmp(tokens[i], ";") == 0) { // if a semicolon is found
+                tokens[i] = NULL; // set it to NULL to separate the commands
+                i++; // increment i to point to the next command
+                int j;
+                for (j = 0; tokens[i] != NULL; j++) { // copy the first command to the next_command array
+                    next_command[j] = tokens[i];
+                    i++;
+                }
+                next_command[j] = NULL; // set the last element to NULL
+                
+                next_command_flag = true; // set the flag to true
+                break; // break out of the loop
+                } else {
+                    i++;
+                }
+            }
+            char* tokens2[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
+            parseCommand(tokens2, users_command); // parse the command again to remove the semicolon
+
             if (!background) { 
                 // execute the command with input/output redirection
                 pid_t pid = fork(); 
@@ -95,9 +120,25 @@ int main(void) {
                     if (redirect_input || redirect_output) { // if there is input/output redirection
                         handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
                     }
-                    execvp(tokens[0], tokens); // execute the command
-                    perror("execvp");
-                    exit(1);
+                    if (!next_command_flag) {
+                        execvp(tokens[0], tokens); // execute the command
+                        perror("execvp");
+                        exit(1);
+                    } else {
+                        cout << tokens << endl;
+                        cout << tokens2 << endl;
+                        execvp(tokens[0], tokens); // execute the command
+                        execvp(tokens2[0], tokens2); // execute the command
+
+                    //     pid_t pid = fork();
+                    //     if (pid == 0) {
+                    //         execvp(tokens2[0], tokens2); // execute the command
+                    //         perror("execvp");
+                    //         exit(1);
+                    //     } else {
+                    //         wait(NULL); // wait for the child process to finish
+                    //     }
+                    // }
                 } else {
                     wait(NULL); // wait for the child process to finish
                 }
