@@ -145,13 +145,9 @@ int main(void) {
 
                     if (next_command_flag) {
                         execvp(tokens[0], tokens); // execute the first command
-                        pid_t pid = fork(); 
-                        if (pid == 0) { // child process
-
-                                execvp(next_command[0], next_command); // execute the next command
-                                perror("execvp");
-                                exit(1);
-                        }
+                        execvp(next_command[0], next_command); // execute the next command
+                        perror("execvp");
+                        exit(1);
                     } else {
                         execvp(tokens[0], tokens); // execute the command
                         perror("execvp");
