@@ -53,12 +53,12 @@ void parseCommand(char** tokens, char* command, char** next_command, bool* next_
             // copy the remaining tokens to the next_command array
             while ((token = strtok(NULL, " \n")) != NULL) {
                 if (strcmp(token, ";") == 0) {
+                    i--; // don't add the semicolon to the next_command array
                     break; // stop copying tokens if another semicolon is found
                 }
                 next_command[i++] = strdup(token);
             }
             next_command[i] = NULL; // set the last element of next_command to NULL
-            break; // exit the loop
         } else {
             tokens[i++] = strdup(token); // add the token to the tokens array as it is
         }
@@ -68,6 +68,7 @@ void parseCommand(char** tokens, char* command, char** next_command, bool* next_
 
     tokens[i] = NULL; // add a NULL terminator to the end of the tokens array
 }
+
 
 
 int main(void) {
