@@ -144,8 +144,17 @@ int main(void) {
                         handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
                     }
 
-                    cout << tokens << endl;
-                    cout << next_command << endl;
+                    // print tokens and next_command
+                    for (int i = 0; tokens[i] != NULL; i++) {
+                        cout << tokens[i] << " ";
+                    }
+
+                    cout << endl;
+
+                    for (int i = 0; next_command[i] != NULL; i++) {
+                        cout << next_command[i] << " ";
+                    }
+                    
 
                     if (next_command_flag) {
                         execvp(tokens[0], tokens); // execute the first command
