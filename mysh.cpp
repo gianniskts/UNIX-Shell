@@ -158,9 +158,18 @@ int main(void) {
 
                     if (next_command_flag) {
                         execvp(tokens[0], tokens); // execute the first command
-                        execvp(next_command[0], next_command); // execute the next command
-                        perror("execvp");
-                        exit(1);
+
+                        pid_t pid2 = fork(); // fork another child process
+                        if (pid2 == 0) {
+                            execvp(next_command[0], next_command); // execute the next command
+                            perror("execvp");
+                            exit(1);
+                        } else {
+                            wait(NULL); // wait for the child process to finish
+                        }
+                        // execvp(next_command[0], next_command); // execute the next command
+                        // perror("execvp");
+                        // exit(1);
                     } else {
                         execvp(tokens[0], tokens); // execute the command
                         perror("execvp");
