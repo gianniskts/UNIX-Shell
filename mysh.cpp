@@ -7,7 +7,6 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
-
 #include "./include/utils.h"
 #include "./include/redirection.h"
 #include "./include/pipe.h"
