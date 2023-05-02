@@ -28,7 +28,7 @@ pid_t running_pid; // global variable to store the PID of the running process. I
 
 bool checkSemicolumn(char* users_command) {
     // checks if there is a ; in input 
-    
+
 }
 
 int main(void) {
