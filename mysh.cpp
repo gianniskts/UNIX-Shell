@@ -26,6 +26,11 @@ int history_index = 0;       // current index in the history array
 
 pid_t running_pid; // global variable to store the PID of the running process. Its externed in signals.h
 
+bool checkSemicolumn(char* users_command) {
+    // checks if there is a ; in input 
+    
+}
+
 int main(void) {
 
     char* tokens[MAX_LINE / 2 + 1]; // command line arguments to be tokenized
