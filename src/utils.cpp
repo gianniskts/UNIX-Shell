@@ -86,18 +86,12 @@ bool handleMultipleCommands(char* users_command) {
                 exit(1);
             } else {
                 // Parent process
-                // printf("[%d] %d\n", ++num_jobs, pid); // print the job number and PID of the background process
-                // bg_jobs[num_jobs].pid = pid; // store the PID of the background process
-                // bg_jobs[num_jobs].status = RUNNING; // set the status of the background process to running
             }
         } else {
             // Not a background process, fork and execute
             pid_t pid = fork();
             if (pid == 0) {
                 // Child process
-                // if (redirect_input || redirect_output) { // if there is input/output redirection
-                //     handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
-                // }
                 execvp(tokens[0], tokens); // execute the command
                 perror("execvp");
                 exit(1);
