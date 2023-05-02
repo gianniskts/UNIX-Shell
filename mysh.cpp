@@ -20,15 +20,56 @@ using namespace std;
 
 #define MAX_LINE 80     // The maximum length command 
 #define HISTORY_SIZE 20 // Τhe maximum number of commands to store in history
+#define MAX_ARGS 10
 
 char* history[HISTORY_SIZE]; // array to store previous commands
 int history_index = 0;       // current index in the history array
 
 pid_t running_pid; // global variable to store the PID of the running process. Its externed in signals.h
 
-bool checkSemicolumn(char* users_command) {
-    // checks if there is a ; in input 
+bool checkSemicolon(char* users_command) {
+    int len = strlen(users_command);
+    for (int i = 0; i < len; i++) {
+        if (users_command[i] == ';') {
+            return true;
+        }
+    }
+    return false;
+}
 
+void handleMultipleCommands(char* users_command) {
+    // Split input by semicolons
+    char* command = strtok(users_command, ";");
+    while (command != NULL) {
+        // Split command by spaces to extract command name and arguments
+        char* args[MAX_ARGS];
+        char* arg = strtok(command, " ");
+        int i = 0;
+        while (arg != NULL) {
+            args[i++] = arg;
+            arg = strtok(NULL, " ");
+        }
+        args[i] = NULL;  // Set last argument to NULL
+        
+        // Fork a new process
+        pid_t pid = fork();
+        if (pid == 0) {
+            // Child process
+            execvp(args[0], args);
+            perror("execvp");  // Should not reach this point if execvp succeeds
+            exit(1);
+        } else if (pid > 0) {
+            // Parent process
+            int status;
+            waitpid(pid, &status, 0);  // Wait for child process to complete
+        } else {
+            // Error
+            perror("fork");
+            exit(1);
+        }
+        
+        command = strtok(NULL, ";");  // Get next command
+    }
 }
 
 int main(void) {
