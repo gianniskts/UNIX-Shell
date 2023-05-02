@@ -141,19 +141,9 @@ int main(void) {
                         handleRedirection(redirect_input, redirect_output, input_file, output_file, append_output);
                     }
 
-                    
-
-                    // if (next_command_flag) {
-                    //     execvp(tokens[0], tokens); // execute the first command
-                    //     execvp(next_command[0], next_command); // execute the next command
-                    //     perror("execvp");
-                    //     exit(1);
-                    // } else {
                         execvp(tokens[0], tokens); // execute the command
                         perror("execvp");
                         exit(1);
-                    // }
-
                 } else {
                     wait(NULL); // wait for the child process to finish
                 }
