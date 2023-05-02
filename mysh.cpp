@@ -37,7 +37,9 @@ bool checkSemicolon(char* users_command) {
     return false;
 }
 
-void handleMultipleCommands(char* users_command) {
+bool handleMultipleCommands(char* users_command) {
+    users_command[strlen(users_command) - 1] = '\0';
+
     // Split input by semicolons
     char* command = strtok(users_command, ";");
     while (command != NULL) {
@@ -66,10 +68,13 @@ void handleMultipleCommands(char* users_command) {
             // Error
             perror("fork");
             exit(1);
+            return false;
         }
         
         command = strtok(NULL, ";");  // Get next command
     }
+
+    return true;
 }
 
 int main(void) {
@@ -94,6 +99,11 @@ int main(void) {
         addHistory(users_command, history, &history_index); // add the command to the history array
         parseCommand(tokens, users_command);                // parse the command and store the tokens in tokens array
 
+        // if (checkSemicolon(users_command)) {
+            handleMultipleCommands(users_command);
+            continue;
+        // }
+        
         if (strcmp(tokens[0], "exit") == 0)  // if the user entered exit, exit the shell
             break;
 
