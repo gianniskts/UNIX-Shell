@@ -25,27 +25,6 @@ char* history[HISTORY_SIZE]; // array to store previous commands
 int history_index = 0;       // current index in the history array
 
 pid_t running_pid; // global variable to store the PID of the running process. Its externed in signals.h
-void parseCommand2(char** tokens, char* input) {
-    // split the input into separate commands based on semicolons
-    char* command = strtok(input, ";");
-
-    int i = 0;
-    while (command != NULL) {
-        // tokenize the command and store the tokens in the tokens array
-        char* token = strtok(command, " \t\n");
-        while (token != NULL) {
-            tokens[i] = token;
-            i++;
-            token = strtok(NULL, " \t\n");
-        }
-        // add NULL as the last token to mark the end of the tokens array
-        tokens[i] = NULL;
-        i++;
-
-        command = strtok(NULL, ";");
-    }
-}
-
 
 int main(void) {
 
@@ -67,7 +46,7 @@ int main(void) {
         fgets(users_command, MAX_LINE, stdin); // read the user's command from stdin and store it in users_command
         // add command to history
         addHistory(users_command, history, &history_index); // add the command to the history array
-        parseCommand2(tokens, users_command);                // parse the command and store the tokens in tokens array
+        parseCommand(tokens, users_command);                // parse the command and store the tokens in tokens array
 
         if (strcmp(tokens[0], "exit") == 0)  // if the user entered exit, exit the shell
             break;
