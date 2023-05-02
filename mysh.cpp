@@ -95,14 +95,14 @@ int main(void) {
         // read input from the user and parse it
         char users_command[MAX_LINE];          // buffer to store the user's command
         fgets(users_command, MAX_LINE, stdin); // read the user's command from stdin and store it in users_command
+        
+        if (checkSemicolon(users_command)) {
+            handleMultipleCommands(users_command);
+        }
+
         // add command to history
         addHistory(users_command, history, &history_index); // add the command to the history array
         parseCommand(tokens, users_command);                // parse the command and store the tokens in tokens array
-
-        // if (checkSemicolon(users_command)) {
-            handleMultipleCommands(users_command);
-            continue;
-        // }
         
         if (strcmp(tokens[0], "exit") == 0)  // if the user entered exit, exit the shell
             break;
