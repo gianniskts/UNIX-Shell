@@ -25,49 +25,26 @@ char* history[HISTORY_SIZE]; // array to store previous commands
 int history_index = 0;       // current index in the history array
 
 pid_t running_pid; // global variable to store the PID of the running process. Its externed in signals.h
+void parseCommand2(char** tokens, char* input) {
+    // split the input into separate commands based on semicolons
+    char* command = strtok(input, ";");
 
-// void parseCommand(char** tokens, char* command, char** next_command, bool* next_command_flag) {
-//     char* token = strtok(command, " \n"); // tokenize the command string
+    int i = 0;
+    while (command != NULL) {
+        // tokenize the command and store the tokens in the tokens array
+        char* token = strtok(command, " \t\n");
+        while (token != NULL) {
+            tokens[i] = token;
+            i++;
+            token = strtok(NULL, " \t\n");
+        }
+        // add NULL as the last token to mark the end of the tokens array
+        tokens[i] = NULL;
+        i++;
 
-//     int i = 0;
-//     while (token != NULL) { // loop through each token in the command
-//         glob_t paths; // a glob_t structure to store the matched paths
-//         int flags = 0;
-
-//         if (strchr(token, '*') != NULL || strchr(token, '?') != NULL) { // check if the token contains wildcards
-//             flags |= GLOB_TILDE; // set the GLOB_TILDE flag to expand tilde characters
-//             glob(token, flags, NULL, &paths); // expand the wildcard pattern using glob
-
-//             // loop through the matching paths and add them to the tokens array
-//             for (int j = 0; j < paths.gl_pathc; j++) {
-//                 tokens[i++] = strdup(paths.gl_pathv[j]);
-//             }
-
-//             globfree(&paths); // free the memory allocated by glob
-//         } else if (strcmp(token, ";") == 0) {
-//             tokens[i] = NULL; // set the last token of the current command to NULL
-//             i = 0; // reset the token counter for the next command
-//             *next_command_flag = true; // set the flag to indicate that a next command exists
-
-//             // copy the remaining tokens to the next_command array
-//             while ((token = strtok(NULL, " \n")) != NULL) {
-//                 if (strcmp(token, ";") == 0) {
-//                     i--; // don't add the semicolon to the next_command array
-//                     break; // stop copying tokens if another semicolon is found
-//                 }
-//                 next_command[i++] = strdup(token);
-//             }
-//             next_command[i] = NULL; // set the last element of next_command to NULL
-//         } else {
-//             tokens[i++] = strdup(token); // add the token to the tokens array as it is
-//         }
-
-//         token = strtok(NULL, " \n"); // move to the next token
-//     }
-
-//     tokens[i] = NULL; // add a NULL terminator to the end of the tokens array
-// }
-
+        command = strtok(NULL, ";");
+    }
+}
 
 
 int main(void) {
@@ -90,7 +67,7 @@ int main(void) {
         fgets(users_command, MAX_LINE, stdin); // read the user's command from stdin and store it in users_command
         // add command to history
         addHistory(users_command, history, &history_index); // add the command to the history array
-        parseCommand(tokens, users_command);                // parse the command and store the tokens in tokens array
+        parseCommand2(tokens, users_command);                // parse the command and store the tokens in tokens array
 
         if (strcmp(tokens[0], "exit") == 0)  // if the user entered exit, exit the shell
             break;
