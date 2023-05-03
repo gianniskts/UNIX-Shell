@@ -46,6 +46,7 @@ void parseCommand(char** tokens, char* command) {
     tokens[i] = NULL; // add a NULL terminator to the end of the tokens array
 }
 
+// check if there is a semicolon in the command
 bool checkSemicolon(char* users_command) {
     int len = strlen(users_command);
     for (int i = 0; i < len; i++) {
@@ -56,12 +57,13 @@ bool checkSemicolon(char* users_command) {
     return false;
 }
 
+// handle multiple commands separated by semicolons
 bool handleMultipleCommands(char* users_command) {
-    users_command[strlen(users_command) - 1] = '\0';
+    users_command[strlen(users_command) - 1] = '\0'; // remove the newline character from the end of the command
 
     // Split input by semicolons
-    char* command = strtok(users_command, ";");
-    while (command != NULL) {
+    char* command = strtok(users_command, ";"); // get the first command with delimiter ';'
+    while (command != NULL) { // loop through each command
         // Split command by spaces to extract command name and arguments
         char* tokens[MAX_ARGS];
         char* token = strtok(command, " ");

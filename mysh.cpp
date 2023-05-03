@@ -105,7 +105,10 @@ int main(void) {
                         perror("execvp");
                         exit(1);
                 } else {
-                    wait(NULL); // wait for the child process to finish
+                    // parent process
+                    int status;
+                    waitpid(pid, &status, 0); // Wait for child process to complete
+
                 }
             }
         }
