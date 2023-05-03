@@ -7,14 +7,10 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <glob.h>
-#include "../include/utils.h"
-#include "../include/redirection.h"
-#include "../include/pipe.h"
-#include "../include/background.h"
-#include "../include/alias.h"
-#include "../include/signals.h"
-#include "../include/history.h"
 
+#include "../include/utils.h"
+#include "../include/background.h"
+#include "../include/signals.h"
 
 #define MAX_ARGS 10
 
@@ -82,7 +78,7 @@ bool handleMultipleCommands(char* users_command) {
         if (!background) { 
             // execute the command with input/output redirection
             pid_t pid = fork(); 
-            running_pid = pid; // store the pid of the running process
+            running_pid = pid; // store the pid of the running process for signal handling. Signals cannot kill the running process 
             if (pid == 0) { // child process
                     execvp(tokens[0], tokens); // execute the command
                     perror("execvp");
