@@ -21,7 +21,7 @@ void addHistory(char* command, char* history[], int* history_index) {
 
 bool checkHistory(char* tokens[], char* history[], int history_index) {
     // check for history command
-    if (strcmp(tokens[0], "history") == 0) { // if the user entered history
+    if (strcmp(tokens[0], "myHistory") == 0) { // if the user entered history
         // print previous commands with indices
         for (int i = 0; i < history_index; i++) {
             cout << i+1 << ": " << history[i] << endl; // print the command along with its index
@@ -30,9 +30,9 @@ bool checkHistory(char* tokens[], char* history[], int history_index) {
     }
 
     // execute command from history
-    if (tokens[0][0] == 'myhistory') { 
+    if (strcmp(tokens[0], "myhistory") == 0) { 
         // execute command with index from history
-        int index = atoi(tokens[0]+1); // convert the index from string to int
+        int index = atoi(tokens[1]); // convert the index from string to int
         if (index <= 0 || index > history_index) { // check if the index is valid
             cout << "Invalid index." << endl;
             return true;
