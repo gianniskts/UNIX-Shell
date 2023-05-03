@@ -75,33 +75,24 @@ bool handleMultipleCommands(char* users_command) {
         tokens[i] = NULL;  // Set last argument to NULL
 
         // check for background process
-            pid_t bg_pid; // pid of the background process
-            bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
-            checkFinishedBackground(bg_pid, background); // check if the background process has finished
-
-            
-            if (!background) { 
-                // execute the command with input/output redirection
-                pid_t pid = fork(); 
-                running_pid = pid; // store the pid of the running process
-
-                if (pid == 0) { // child process
-
-                        execvp(tokens[0], tokens); // execute the command
-                        perror("execvp");
-                        exit(1);
-                } else {
-                    // parent process
-                    int status;
-                    waitpid(pid, &status, 0); // Wait for child process to complete
-
-                }
+        pid_t bg_pid; // pid of the background process
+        bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
+        checkFinishedBackground(bg_pid, background); // check if the background process has finished
+        
+        if (!background) { 
+            // execute the command with input/output redirection
+            pid_t pid = fork(); 
+            running_pid = pid; // store the pid of the running process
+            if (pid == 0) { // child process
+                    execvp(tokens[0], tokens); // execute the command
+                    perror("execvp");
+                    exit(1);
             } else {
-                // continue with the next command
-                command = strtok(NULL, ";");
-                continue;
-                    
+                // parent process
+                int status;
+                waitpid(pid, &status, 0); // Wait for child process to complete
             }
+        }
         command = strtok(NULL, ";");  // Get next command
     }
 
