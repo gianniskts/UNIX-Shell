@@ -43,7 +43,8 @@ int main(void) {
         // read input from the user and parse it
         char users_command[MAX_LINE];          // buffer to store the user's command
         fgets(users_command, MAX_LINE, stdin); // read the user's command from stdin and store it in users_command
-        
+
+        // handle multiple commands separated by semicolon
         if (checkSemicolon(users_command)) {
             handleMultipleCommands(users_command);
         }
