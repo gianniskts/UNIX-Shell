@@ -74,44 +74,34 @@ bool handleMultipleCommands(char* users_command) {
         }
         tokens[i] = NULL;  // Set last argument to NULL
 
-        // Check for background process
-        pid_t bg_pid; // pid of the background process
-        bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
-        
-        if (background) {
-            // Fork a new process for the background command
-            pid_t pid = fork();
-            if (pid == 0) {
-                // Child process
-                execvp(tokens[0], tokens);
-                perror("execvp"); // Should not reach this point if execvp succeeds
-                exit(1);
-            } else {
-                // Parent process
-            }
-        } else {
-            // Not a background process, fork and execute
-            pid_t pid = fork();
-            if (pid == 0) {
-                // Child process
-                execvp(tokens[0], tokens); // execute the command
-                perror("execvp");
-                exit(1);
-            } else if (pid > 0) {
-                // Parent process
-                int status;
-                waitpid(pid, &status, 0); // Wait for child process to complete
-            } else {
-                // Error
-                perror("fork");
-                exit(1);
-                return false;
-            }
-        }
+        // check for background process
+            pid_t bg_pid; // pid of the background process
+            bool background = checkBackground(tokens, &bg_pid); // check if the command is a background process
+            checkFinishedBackground(bg_pid, background); // check if the background process has finished
 
-        // Check for finished background processes
-        checkFinishedBackground(bg_pid, background);
+            
+            if (!background) { 
+                // execute the command with input/output redirection
+                pid_t pid = fork(); 
+                running_pid = pid; // store the pid of the running process
 
+                if (pid == 0) { // child process
+
+                        execvp(tokens[0], tokens); // execute the command
+                        perror("execvp");
+                        exit(1);
+                } else {
+                    // parent process
+                    int status;
+                    waitpid(pid, &status, 0); // Wait for child process to complete
+
+                }
+            } else {
+                // continue with the next command
+                command = strtok(NULL, ";");
+                continue;
+                    
+            }
         command = strtok(NULL, ";");  // Get next command
     }
 
