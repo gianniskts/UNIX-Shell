@@ -4,23 +4,24 @@ This project is structured into modules to ensure better code organization. The 
 
 ```txt
 |--include
-| |--alias.h
-| |--background.h
-| |--history.h
-| |--pipe.h
-| |--redirection.h
-| |--signals.h
-| |--utils.h
+|    |--alias.h
+|    |--background.h
+|    |--history.h
+|    |--pipe.h
+|    |--redirection.h
+|    |--signals.h
+|    |--utils.h
 |--src
-| |--alias.cpp
-| |--background.cpp
-| |--history.cpp
-| |--pipe.cpp
-| |--redirection.cpp
-| |--signals.cpp
-| |--utils.cpp
+|    |--alias.cpp
+|    |--background.cpp
+|    |--history.cpp
+|    |--pipe.cpp
+|    |--redirection.cpp
+|    |--signals.cpp
+|    |--utils.cpp
 |--Makefile
 |--mysh.cpp
+
 ```
 
 
@@ -63,10 +64,12 @@ Implementation
 14.	Κάνει exec την tokenized εντολή 
 
 -----------------------------Redirection-----------------------------
+```bash
 Examples; 1) in-mysh-now:>ls -l > out.txt
 	 2) in-mysh-now:>sort < input.txt > out.txt
 	 3) in-mysh-now:>cat input.txt >> out2.txt
-	 
+```
+
 Implementation
 Η συνάρτηση checkRedirection() διασχίζει τον πίνακα tokens για να αναγνωρίσει σύμβολα ανακατεύθυνσης και τροποποιεί τα flags ανάλογα.
 Η handleRedirection() χειρίζεται την ανακατεύθυνση κάνοντας open και dup2 τα αρχεία εισόδου - εξόδου. Ειδικά για την έξοδο, αν το σύμβολο είναι ">" τότε κάνει append αλλιώς αν είναι ">>" τότε κάνει truncate.
