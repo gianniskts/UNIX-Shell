@@ -1,4 +1,4 @@
-# UNIX System Programming - Project 1
+# UNIX System Programming - Project 1 - Shell
 
 This project is structured into modules to ensure better code organization. The project structure is as follows:
 
@@ -48,7 +48,7 @@ For instance, to run the program, use:
 
 ## -----------------------------mysh-----------------------------
 
-Implementation
+### Implementation
 1.	Αποθηκεύει την εντολή του χρήστη στον πίνακα χαρακτήρων users_command
 2.	Αποθηκεύει την εντολή στον πίνακα history μέσω της συνάρτησης addHistory()
 3.	Χειρίζεται τα σήματα control-c, control-z μέσω της συνάρτησης signal()
@@ -64,7 +64,7 @@ Implementation
 13.	Χειρίζεται την ανακατεύθυνση αν υπάρχει
 14.	Κάνει exec την tokenized εντολή 
 
------------------------------Redirection-----------------------------
+## -----------------------------Redirection-----------------------------
 ```bash
 Examples; 1) in-mysh-now:>ls -l > out.txt
 	 2) in-mysh-now:>sort < input.txt > out.txt
