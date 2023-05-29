@@ -3,23 +3,25 @@
 This project is structured into modules to ensure better code organization. The project structure is as follows:
 
 |--include
-|    |--alias.h
-|    |--background.h
-|    |--history.h
-|    |--pipe.h
-|    |--redirection.h
-|    |--signals.h
-|    |--utils.h
+| |--alias.h
+| |--background.h
+| |--history.h
+| |--pipe.h
+| |--redirection.h
+| |--signals.h
+| |--utils.h
 |--src
-|    |--alias.cpp
-|    |--background.cpp
-|    |--history.cpp
-|    |--pipe.cpp
-|    |--redirection.cpp
-|    |--signals.cpp
-|    |--utils.cpp
+| |--alias.cpp
+| |--background.cpp
+| |--history.cpp
+| |--pipe.cpp
+| |--redirection.cpp
+| |--signals.cpp
+| |--utils.cpp
 |--Makefile
 |--mysh.cpp
+
+
 
 
 
