@@ -2,6 +2,7 @@
 
 This project is structured into modules to ensure better code organization. The project structure is as follows:
 
+```txt
 |--include
 | |--alias.h
 | |--background.h
@@ -20,7 +21,7 @@ This project is structured into modules to ensure better code organization. The 
 | |--utils.cpp
 |--Makefile
 |--mysh.cpp
-
+```
 
 
 
