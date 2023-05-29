@@ -1,8 +1,6 @@
------------------------------UNIX SYSTEM PROGRAMMING-----------------------------
+# UNIX System Programming - Project 1
 
-PROJECT 1
-
-Η εργασία αποτελείται από modules για την καλύτερη οργάνωση του κώδικα, τα οποία παρουσιάζονται παρακάτω.
+This project is structured into modules to ensure better code organization. The project structure is as follows:
 
 |-include
 |-----alias.h
@@ -23,14 +21,25 @@ PROJECT 1
 |-Makefile
 |-mysh.cpp
 
-Η εργασία είναι υλοποιημένη με τη γλώσσα C++. Δεν έχει χρησιμοποιηθεί η βιβλιοθήκη STL, καθώς γίνεται κυρίως χρήση βιβλιοθηκών της γλώσσας C. Τηρήθηκαν όλες οι προδιαγραφές της εκφώνησης.
 
------------------------------Εκτέλεση-----------------------------
+## Implementation Details
 
-1.	Στο terminal ανοίξτε με τα κατάλληλα cd τον τρέχων κατάλογο της εργασίας και εκτελέστε τις παρακάτω εντολές
-2.	make
-3.	./mysh 
-Ενδεικτική εκτέλεση: ./mysh 
+The implementation of the project has been carried out in C++. The Standard Template Library (STL) has not been used. Instead, most of the code relies on libraries from the C language. The project has been developed adhering to all the specifications provided in the project outline.
+
+## Execution Instructions
+
+To execute the project, follow the steps below:
+
+1. Open a terminal.
+2. Navigate to the current directory of the project using the appropriate `cd` commands.
+3. Run the `make` command to compile the project.
+4. Execute the application using the `./mysh` command.
+
+For instance, to run the program, use:
+
+```bash
+./mysh
+
 
 -----------------------------mysh-----------------------------
 Implementation
