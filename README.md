@@ -46,7 +46,8 @@ For instance, to run the program, use:
 ./mysh
 ```
 
------------------------------mysh-----------------------------
+## -----------------------------mysh-----------------------------
+
 Implementation
 1.	Αποθηκεύει την εντολή του χρήστη στον πίνακα χαρακτήρων users_command
 2.	Αποθηκεύει την εντολή στον πίνακα history μέσω της συνάρτησης addHistory()
@@ -70,50 +71,61 @@ Examples; 1) in-mysh-now:>ls -l > out.txt
 	 3) in-mysh-now:>cat input.txt >> out2.txt
 ```
 
-Implementation
+### Implementation
 Η συνάρτηση checkRedirection() διασχίζει τον πίνακα tokens για να αναγνωρίσει σύμβολα ανακατεύθυνσης και τροποποιεί τα flags ανάλογα.
 Η handleRedirection() χειρίζεται την ανακατεύθυνση κάνοντας open και dup2 τα αρχεία εισόδου - εξόδου. Ειδικά για την έξοδο, αν το σύμβολο είναι ">" τότε κάνει append αλλιώς αν είναι ">>" τότε κάνει truncate.
 
------------------------------Pipes-----------------------------
+## -----------------------------Pipes-----------------------------
+```bash
 Examples; 1) in-mysh-now:>cat input.txt | sort > out3.txt
 	  2) in-mysh-now:>cat input.txt input2.txt | sort > out3.txt
-	 
-Implementation
+```
+
+### Implementation
 Η συνάρτηση handlePipe() διασχίζει τον πίνακα tokens για να αναγνωρίσει αν υπάρχει σύμβολο pipe και αν ναι, τότε δημιουργεί pipe με read-write ends, που για το καθένα κάνει νέο fork και αφού έχει χωρίσει τον πίνακα tokens σε 2 υποπίνακες για το καθέ άκρο της σωλήνωσης κάνει exec ελέγχοντας και για ανακατεύθυνση. 
 
------------------------------Background-----------------------------
+## -----------------------------Background-----------------------------
+```bash
 Example; 1) in-mysh-now:>sort input.txt &
 	    ls
-	  
-Implementation
+```		
+### Implementation
 Η συνάρτηση checkBackground() διασχίζει τον πίνακα tokens για να αναγνωρίσει αν υπάρχει σύμβολο background και αν ναι, τότε δημιουργεί νέα διεργασία με το pid της να χειρίζεται η μητρική διεργασία. 
 Η checkFinishedBackground() ενόσω η σημαία background == true, ελέγχει αν η διεργασία στο παρασκήνιο έχει τελειώσει, αλλιώς κοιμάται για 1 sec και ελέγχει ξανά.
 
 -----------------------------Wildcards-----------------------------
+```bash
 Examples; 1) in-mysh-now:>ls *.t?t
 	  2) in-mysh-now:>ls mysh*
-	 
-Implementation
+```
+
+### Implementation
 Η διαχείρηση των wildcards γίνεται στο αρχικό parsing. Άμα ανειχνευτεί ένας από τους 2 χαρακτήρες των wildcards τότε μέσω της βιβλιοθήκης glob.h βρίσκονται όλα τα patterns που ταιριάζουν με την είσοδο του χρήστη.
 
------------------------------Aliases-----------------------------
+## -----------------------------Aliases-----------------------------
+```bash
 Examples; 1) in-mysh-now:>createalias myalias ls
 	  2) in-mysh-now:>destroyalias myalias
-	 
-Implementation
+```
+
+### Implementation
 Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης checkAlias() η οποία ελέγχει τον πίνακα tokens για τα tokens createalias, destroyalias και προσθέτει τα aliases στον πίνακα aliases. Για κάθε input του χρήστη διασχίζεται ο πίνακας aliases για να διακρίνει αν το token του χρήστη είναι aliased ή όχι.
 
------------------------------Signals-----------------------------
+## -----------------------------Signals-----------------------------
+```bash
 Examples; 1) in-mysh-now:>^Z
 	  2) in-mysh-now:>^C
-	 
-Implementation
+```
+
+### Implementation
 Η διαχείρηση των aliases γίνεται μέσω της συνάρτησης signal() από τη βιβλιοθήκη signal.h. Ορίστικαν οι signal handlers sigint_handler() και sigtstp_handler() για ^C και ^Ζ αντίστοιχα οι οποίες τερματίζουν την τρεχούμενη διεργασία.
 
------------------------------History-----------------------------
+## -----------------------------History-----------------------------
+```bash
 Examples; 1) in-mysh-now:>myHistory
 	  2) in-mysh-now:>myhistory 2
-	 
-Implementation
+``` 
+
+### Implementation
 Η διαχείρηση του ιστορικού γίνεται μέσω της συνάρτησης addHistory() η οποία προσθέτει κάθε εντολή του χρήστη στον πίνακα ιστορικού history[]. Μέσω της checkHistory() όταν ο χρήστης πληκτρολογήσει myHistory μπορεί να δει το ιστορικό του και πληκτρολογώντας myhistory {index} (πχ. myhistory 2) μπορεί να εκτελέσει την εντολή ιστορικού index.
 
